@@ -6,14 +6,13 @@ import {
     getSimilarMedia,
     getTrendingMedia,
 } from '../controllers/media.controller.js';
-import { protectRoute } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-router.get('/trending', protectRoute, getTrendingMedia);
-router.get('/:id/trailers', protectRoute, getMediaTrailers);
-router.get('/:id/details', protectRoute, getMediaDetails);
-router.get('/:id/similar', protectRoute, getSimilarMedia);
-router.get('/:category', protectRoute, getMediaByCategory);
+router.get('/trending', getTrendingMedia);
+router.get('/:id/trailers', getMediaTrailers);
+router.get('/:id/details', getMediaDetails);
+router.get('/:id/similar', getSimilarMedia);
+router.get('/:category', getMediaByCategory);
 
 export default router;

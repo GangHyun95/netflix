@@ -39,11 +39,11 @@ export const getMediaTrailers = async (req, res) => {
         if (error.message.includes('404')) {
             return res.status(404).send(null);
         }
-
         res.status(500).json({
             success: false,
             message: '서버 오류가 발생했습니다.',
         });
+        console.error('Error in getMediaTrailers controller:', error.message);
     }
 };
 
@@ -63,11 +63,11 @@ export const getMediaDetails = async (req, res) => {
         if (error.message.includes('404')) {
             return res.status(404).send(null);
         }
-
         res.status(500).json({
             success: false,
             message: '서버 오류가 발생했습니다.',
         });
+        console.error('Error in getMediaDetails controller:', error.message);
     }
 };
 
@@ -87,11 +87,11 @@ export const getSimilarMedia = async (req, res) => {
         if (error.message.includes('404')) {
             return res.status(404).send(null);
         }
-
         res.status(500).json({
             success: false,
             message: '서버 오류가 발생했습니다.',
         });
+        console.error('Error in getSimilarMedia controller:', error.message);
     }
 };
 
