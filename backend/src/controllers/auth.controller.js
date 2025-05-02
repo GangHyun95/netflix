@@ -1,6 +1,6 @@
-import { generateToken } from '../../lib/utils.js';
-import User from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
+import User from '../models/user.model.js'
+import { generateToken } from '../lib/utils.js'
 
 export const signup = async (req, res) => {
     try {
@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
                 message: '비밀번호는 최소 6자 이상이어야 합니다.',
             });
         }
-
+        
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
