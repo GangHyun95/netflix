@@ -74,9 +74,61 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-    res.send('Login');
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: '모든 필수 항목을 입력해 주세요.',
+            });
+        }
+
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: '이메일 또는 비밀번호가 올바르지 않습니다.',
+            });
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordCorrect) {
+            return res.status(401).json({
+                success: false,
+                message: '이메일 또는 비밀번호가 올바르지 않습니다.',
+            });
+        }
+
+        generateToken(user._id, res);
+        res.status(200).json({
+            success: true,
+            user: {
+                ...user._doc,
+                password: '',
+            },
+        });
+    } catch (error) {
+        console.log('Error in login controller:', error.message);
+        res.status(500).json({
+            success: false,
+            message: '서버 오류가 발생했습니다.',
+        });
+    }
 };
 
 export const logout = async (req, res) => {
-    res.send('Logout');
+    try {
+        res.clearCookie('jwt-netflix');
+        res.status(200).json({
+            success: true,
+            message: '로그아웃 성공',
+        });
+    } catch (error) {
+        console.log('Error in logout controller:', error.message);
+        res.status(500).json({
+            success: false,
+            message: '서버 오류가 발생했습니다.',
+        });
+    }
 };
