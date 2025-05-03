@@ -1,6 +1,16 @@
 @import 'tailwindcss';
 
 .hero-bg {
+    position: relative;
+}
+
+.hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    background-position: center center;
     background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)),
         url('hero.png');
+    background-size: cover;
+    z-index: -1;
 }

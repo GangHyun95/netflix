@@ -1,3 +1,89 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 export default function LoginPage() {
-    return <div>LoginPage</div>;
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+
+    const handleSignup = (e: React.FormEvent) => {
+        e.preventDefault();
+    };
+
+    return (
+        <div className='h-screen w-full hero-bg'>
+            <header className='max-w-6xl mx-auto flex items-center justify-between p-4'>
+                <Link to='/'>
+                    <img src='/netflix-logo.png' alt='logo' className='w-52' />
+                </Link>
+            </header>
+
+            <div className='flex justify-center items-center mt-20 mx-3'>
+                <div className='w-full max-w-md p-8 space-y-6 bg-black/60 rounded-lg shadow-md'>
+                    <h1 className='text-center text-white text-2xl font-bold mb-4'>
+                        로그인
+                    </h1>
+
+                    <form className='space-y-4' onSubmit={handleSignup}>
+                        <div>
+                            <label
+                                htmlFor='email'
+                                className='text-sm font-medium text-gray-300 block'
+                            >
+                                이메일
+                            </label>
+                            <input
+                                id='email'
+                                type='email'
+                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
+                                placeholder='이메일을 입력하세요.'
+                                value={formData.email}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        email: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                        <div>
+                            <label
+                                htmlFor='password'
+                                className='text-sm font-medium text-gray-300 block'
+                            >
+                                비밀번호
+                            </label>
+                            <input
+                                id='password'
+                                type='password'
+                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
+                                placeholder='비밀번호를 입력하세요.'
+                                value={formData.password}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        password: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        <button className='w-full py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 cursor-pointer'>
+                            로그인
+                        </button>
+                    </form>
+                    <div className='text-center text-gray-400'>
+                        넷플릭스 회원이 아닌가요?{' '}
+                        <Link
+                            to='/signup'
+                            className='text-red-500 hover:underline'
+                        >
+                            지금 가입하세요.
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
