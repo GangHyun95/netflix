@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
-import User from '../models/user.model.js'
-import { generateToken } from '../lib/utils.js'
+import User from '../models/user.model.js';
+import { generateToken } from '../lib/utils.js';
 
 export const signup = async (req, res) => {
     try {
@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
                 message: '비밀번호는 최소 6자 이상이어야 합니다.',
             });
         }
-        
+
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
@@ -130,5 +130,17 @@ export const logout = async (req, res) => {
             success: false,
             message: '서버 오류가 발생했습니다.',
         });
+    }
+};
+
+export const checkAuth = (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            user: req.user,
+        });
+    } catch (error) {
+        console.log('인증 확인 중 오류 발생:', error.message);
+        res.status(500).json({ message: '서버 오류가 발생했습니다.' });
     }
 };
