@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '../lib/axios';
 import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
 
 type AuthState = {
     authUser: UserType | null;
@@ -28,32 +29,73 @@ const initialState: AuthState = {
 
 export const signup = createAsyncThunk(
     'auth/signup',
-    async (formData: UserType) => {
-        const res = await axiosInstance.post('/v1/auth/signup', formData);
-        toast.success('회원가입 성공');
-        return res.data.user;
+    async (formData: UserType, { rejectWithValue }) => {
+        try {
+            const res = await axiosInstance.post('/v1/auth/signup', formData);
+            toast.success('회원가입 성공');
+            return res.data.user;
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+            const errorMessage =
+                err.response?.data?.message ||
+                '회원가입 중 오류가 발생했습니다.';
+            toast.error(errorMessage);
+            return rejectWithValue(errorMessage);
+        }
     }
 );
 
 export const login = createAsyncThunk(
     'auth/login',
-    async (formData: UserType) => {
-        const res = await axiosInstance.post('/v1/auth/login', formData);
-        toast.success('로그인 성공');
-        return res.data.user;
+    async (formData: UserType, { rejectWithValue }) => {
+        try {
+            const res = await axiosInstance.post('/v1/auth/login', formData);
+            toast.success('로그인 성공');
+            return res.data.user;
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+            const errorMessage =
+                err.response?.data?.message ||
+                '회원가입 중 오류가 발생했습니다.';
+            toast.error(errorMessage);
+            return rejectWithValue(errorMessage);
+        }
     }
 );
 
-export const logout = createAsyncThunk('auth/logout', async (_) => {
-    const res = await axiosInstance.post('/v1/auth/logout');
-    toast.success('로그아웃 성공');
-    return null;
-});
+export const logout = createAsyncThunk(
+    'auth/logout',
+    async (_, { rejectWithValue }) => {
+        try {
+            await axiosInstance.post('/v1/auth/logout');
+            toast.success('로그아웃 성공');
+            return null;
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+            const errorMessage =
+                err.response?.data?.message ||
+                '회원가입 중 오류가 발생했습니다.';
+            toast.error(errorMessage);
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
 
-export const checkAuth = createAsyncThunk('auth/checkAuth', async (_) => {
-    const res = await axiosInstance.get('/v1/auth/check');
-    return res.data.user;
-});
+export const checkAuth = createAsyncThunk(
+    'auth/checkAuth',
+    async (_, { rejectWithValue }) => {
+        try {
+            const res = await axiosInstance.get('/v1/auth/check');
+            return res.data.user;
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+            const errorMessage =
+                err.response?.data?.message ||
+                '인증 확인 중 오류가 발생했습니다.';
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
 
 const authSlice = createSlice({
     name: 'auth',
