@@ -18,3 +18,18 @@
 .btn {
     @apply bg-red-600 hover:bg-red-700 text-white flex justify-center items-center cursor-pointer;
 }
+
+.shimmer {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(to right, #2c2c2c 4%, #333 25%, #2c2c2c 36%);
+    background-size: 1000px 100%;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}

@@ -1,16 +1,44 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import { Info, Play } from 'lucide-react';
+import useGetTrending from '../../hooks/useGetTrending';
+import {
+    MOVIE_CATEGORIES,
+    ORIGINAL_IMG_BASE_URL,
+    TV_CATEGORIES,
+} from '../../utils/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import MovieSlider from '../../components/MovieSlider';
+import { useState } from 'react';
 
 export default function HomeScreen() {
+    const { trendingContent } = useGetTrending();
+    const { contentType } = useSelector((state: RootState) => state.content);
+    const [imgLoading, setImgLoading] = useState(true);
+
+    if (!trendingContent)
+        return (
+            <div className='h-screen text-white relative'>
+                <Navbar />
+                <div className='absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center -z-10 shimmer'></div>
+            </div>
+        );
+
     return (
         <>
             <div className='relative h-screen text-white'>
                 <Navbar />
+
+                {imgLoading && (
+                    <div className='absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center -z-10 shimmer'></div>
+                )}
+                
                 <img
-                    src='/extraction.jpg'
+                    src={ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path}
                     alt='Hero img'
                     className='absolute top-0 left-0 w-full object-cover -z-50'
+                    onLoad={() => setImgLoading(false)}
                 />
                 <div
                     className='absolute top-0 left-0 w-full h-full bg-black/50 -z-50'
@@ -19,27 +47,29 @@ export default function HomeScreen() {
                 <div className='absolute top-0 left-0 w-full h-full flex flex-col justify-center px-8 md:px-16'>
                     <div className='bg-gradient-to-b from-black via-transparent to-transparent absolute w-full h-full top-0 left-0 -z-10' />
                     <div className='max-w-xl'>
-                        <img
-                            src='/extraction-logo.jpg'
-                            className='pr-4'
-                        />
+                        <h1 className='mt-4 text-6xl font-extrabold text-balance'>
+                            {trendingContent?.title || trendingContent?.name}
+                        </h1>
                         <div className='flex gap-2 mt-6 text-lg'>
-                            <p>2024</p>
+                            <p>
+                                {trendingContent?.release_date?.split('-')[0] ||
+                                    trendingContent?.first_air_date?.split(
+                                        '-'
+                                    )[0]}
+                            </p>
                             <div>|</div>
-                            <p>15+</p>
+                            <p>{trendingContent?.adult ? '18+' : 'PG-13'}</p>
                         </div>
 
-                        <p className='mt-4 text-lg'>
-                            밤낮없이 범죄와 싸우는 베테랑 형사 서도철과
-                            강력범죄수사대 형사들. 어느 날, 한 대학교수의 죽음을
-                            계기로 연쇄 살인 가능성이 떠오르는데. 단서를 찾아
-                            나선 형사들 앞에 충격적인 영상이 공개된다.
+                        <p className='mt-4 text-lg line-clamp-3'>
+                            {trendingContent?.overview ||
+                                '상세 정보가 없습니다.'}
                         </p>
                     </div>
 
                     <div className='flex mt-8'>
                         <Link
-                            to='/watch/123'
+                            to={`/watch/${trendingContent?.id}`}
                             className='bg-white hover:bg-white/80 text-black font-bold py-2 px-4 rounded mr-4 flex items-center'
                         >
                             <Play className='size-6 mr-2 fill-black' />
@@ -54,6 +84,16 @@ export default function HomeScreen() {
                         </Link>
                     </div>
                 </div>
+            </div>
+
+            <div className='flex flex-col gap-10 bg-black py-10'>
+                {contentType === 'movie'
+                    ? MOVIE_CATEGORIES.map((category) => (
+                          <MovieSlider key={category.key} category={category} />
+                      ))
+                    : TV_CATEGORIES.map((category) => (
+                          <MovieSlider key={category.key} category={category} />
+                      ))}
             </div>
         </>
     );

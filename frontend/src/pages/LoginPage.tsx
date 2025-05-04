@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppDispatch, RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/authSlice';
+import { login } from '../store/slices/authSlice';
 import Loader from '../components/Loader';
 
 export default function LoginPage() {

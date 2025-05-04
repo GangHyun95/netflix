@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosInstance } from '../lib/axios';
+import { axiosInstance } from '../../lib/axios.ts'
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 
@@ -32,7 +32,7 @@ export const signup = createAsyncThunk(
     'auth/signup',
     async (formData: UserType, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.post('/v1/auth/signup', formData);
+            const res = await axiosInstance.post('/auth/signup', formData);
             toast.success('회원가입 성공');
             return res.data.user;
         } catch (error) {
@@ -50,7 +50,7 @@ export const login = createAsyncThunk(
     'auth/login',
     async (formData: UserType, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.post('/v1/auth/login', formData);
+            const res = await axiosInstance.post('/auth/login', formData);
             toast.success('로그인 성공');
             return res.data.user;
         } catch (error) {
@@ -68,7 +68,7 @@ export const logout = createAsyncThunk(
     'auth/logout',
     async (_, { rejectWithValue }) => {
         try {
-            await axiosInstance.post('/v1/auth/logout');
+            await axiosInstance.post('/auth/logout');
             toast.success('로그아웃 성공');
             return null;
         } catch (error) {
@@ -86,7 +86,7 @@ export const checkAuth = createAsyncThunk(
     'auth/checkAuth',
     async (_, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.get('/v1/auth/check');
+            const res = await axiosInstance.get('/auth/check');
             return res.data.user;
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;

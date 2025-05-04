@@ -1,9 +1,11 @@
-import { LogOut, Menu, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { AppDispatch, RootState } from '../store/store';
-import { logout } from '../store/authSlice';
+import { logout } from '../store/slices/authSlice';
+import { setContentType } from '../store/slices/contentSlice';
+
+import { Link } from 'react-router-dom';
+import { LogOut, Menu, Search } from 'lucide-react';
 
 export default function Navbar() {
     const dispatch = useDispatch<AppDispatch>();
@@ -24,16 +26,24 @@ export default function Navbar() {
                 </Link>
                 {/* desktop navbar items */}
                 <div className='hidden sm:flex gap-2 items-center'>
-                    <Link to='/' className='hover:underline after:content-['>
-                        Movies
+                    <Link
+                        to='/'
+                        className='hover:underline'
+                        onClick={() => dispatch(setContentType('movie'))}
+                    >
+                        영화
                     </Link>
                     <div className='text-gray-500'>|</div>
-                    <Link to='/' className='hover:underline'>
-                        Tv Shows
+                    <Link
+                        to='/'
+                        className='hover:underline'
+                        onClick={() => dispatch(setContentType('tv'))}
+                    >
+                        TV 프로그램
                     </Link>
                     <div className='text-gray-500'>|</div>
                     <Link to='/history' className='hover:underline'>
-                        Search History
+                        시청 기록
                     </Link>
                 </div>
             </div>
@@ -66,21 +76,21 @@ export default function Navbar() {
                         className='block hover:underline p-2'
                         onClick={toggleMobileMenu}
                     >
-                        Movies
+                        영화
                     </Link>
                     <Link
                         to={'/'}
                         className='block hover:underline p-2'
                         onClick={toggleMobileMenu}
                     >
-                        Tv Shows
+                        TV 프로그램
                     </Link>
                     <Link
                         to={'/history'}
                         className='block hover:underline p-2'
                         onClick={toggleMobileMenu}
                     >
-                        Search History
+                        시청 기록
                     </Link>
                 </div>
             )}

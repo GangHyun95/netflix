@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './store/store';
-import { checkAuth } from './store/authSlice';
+import { checkAuth } from './store/slices/authSlice'
 
 import { Toaster } from 'react-hot-toast';
 import { Loader } from 'lucide-react';
