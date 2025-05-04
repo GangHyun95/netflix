@@ -1,15 +1,25 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppDispatch, RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { signup } from '../store/authSlice';
+import Loader from '../components/Loader';
 
 export default function SignupPage() {
+    const { searchParams } = new URL(window.location.href);
+    const emailValue = searchParams.get('email') || '';
     const [formData, setFormData] = useState({
-        email: '',
+        email: emailValue,
         username: '',
         password: '',
     });
 
+    const dispatch = useDispatch<AppDispatch>();
+    const { isSigningUp } = useSelector((state: RootState) => state.auth);
+
     const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
+        dispatch(signup(formData));
     };
 
     return (
@@ -40,7 +50,12 @@ export default function SignupPage() {
                                 className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
                                 placeholder='이메일을 입력하세요.'
                                 value={formData.email}
-                                onChange={(e) => setFormData({...formData, email: e.target.value })}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        email: e.target.value,
+                                    })
+                                }
                             />
                         </div>
                         <div>
@@ -56,7 +71,12 @@ export default function SignupPage() {
                                 className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
                                 placeholder='사용자 이름을 입력하세요.'
                                 value={formData.username}
-                                onChange={(e) => setFormData({...formData, username: e.target.value })}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        username: e.target.value,
+                                    })
+                                }
                             />
                         </div>
                         <div>
@@ -72,12 +92,21 @@ export default function SignupPage() {
                                 className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
                                 placeholder='비밀번호를 입력하세요.'
                                 value={formData.password}
-                                onChange={(e) => setFormData({...formData, password: e.target.value })}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        password: e.target.value,
+                                    })
+                                }
                             />
                         </div>
 
-                        <button className='w-full py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 cursor-pointer'>
-                            회원가입
+                        <button
+                            type='submit'
+                            className='btn w-full gap-1.5 px-4 py-2 text-sm font-semibold rounded-md'
+                            disabled={isSigningUp}
+                        >
+                            {isSigningUp ? <Loader /> : '회원가입'}
                         </button>
                     </form>
                     <div className='text-center text-gray-400'>

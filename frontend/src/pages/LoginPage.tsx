@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppDispatch, RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../store/authSlice';
+import Loader from '../components/Loader';
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({
@@ -7,8 +11,12 @@ export default function LoginPage() {
         password: '',
     });
 
+    const dispatch = useDispatch<AppDispatch>();
+    const { isLoggingIn } = useSelector((state: RootState) => state.auth);
+
     const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
+        dispatch(login(formData));
     };
 
     return (
@@ -69,8 +77,8 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <button className='w-full py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 cursor-pointer'>
-                            로그인
+                        <button className='btn w-full gap-1.5 px-4 py-2 text-sm font-semibold rounded-md'>
+                            {isLoggingIn ? <Loader /> : '로그인'}
                         </button>
                     </form>
                     <div className='text-center text-gray-400'>

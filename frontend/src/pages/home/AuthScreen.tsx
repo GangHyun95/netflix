@@ -1,10 +1,20 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
 export default function AuthScreen() {
     const [email, setEmail] = useState('');
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) {
+            emailInputRef.current?.focus();
+            return;
+        }
+        navigate('/signup?email=' + email);
+    };
     return (
         <div className='hero-bg relative'>
             {/* Navbar */}
@@ -16,7 +26,7 @@ export default function AuthScreen() {
                 />
                 <Link
                     to='login'
-                    className='text-white bg-red-600 py-1 px-2 rounded'
+                    className='btn py-1 px-2 rounded'
                 >
                     로그인
                 </Link>
@@ -35,15 +45,19 @@ export default function AuthScreen() {
                     이메일 주소를 입력하세요.
                 </p>
 
-                <form className='flex flex-col md:flex-row gap-4 w-1/2'>
+                <form
+                    className='flex flex-col md:flex-row gap-4 w-1/2'
+                    onSubmit={handleSubmit}
+                >
                     <input
+                        ref={emailInputRef}
                         type='email'
                         placeholder='이메일 주소'
                         className='p-4 rounded flex-1 bg-black/80 border border-gray-700'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <button className='bg-red-600 text-xl lg:text-2xl px-2 lg:px-6 py-1 md:py-2 rounded flex justify-center items-center'>
+                    <button className='btn text-xl lg:text-2xl px-2 lg:px-6 py-1 md:py-2 rounded'>
                         시작하기
                         <ChevronRight className='size-6 md:size-8' />
                     </button>
