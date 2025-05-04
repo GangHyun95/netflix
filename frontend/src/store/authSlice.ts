@@ -16,6 +16,7 @@ type UserType = {
     email: string;
     username?: string;
     password: string;
+    image?: string;
 };
 
 const initialState: AuthState = {
