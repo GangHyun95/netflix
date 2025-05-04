@@ -8,7 +8,7 @@ export const getTrendingMedia = async (req, res) => {
         }
 
         const data = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/trending/${type}/day?language=en-US`
+            `https://api.themoviedb.org/3/trending/${type}/day?language=ko-KR`
         );
 
         const randomItem =
@@ -104,7 +104,7 @@ export const getMediaByCategory = async (req, res) => {
         }
 
         const data = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/${type}/${category}?language=en-US&page=1`
+            `https://api.themoviedb.org/3/${type}/${category}?language=ko-KR&page=1`
         );
         res.status(200).json({ success: true, content: data.results });
     } catch (error) {

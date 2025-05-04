@@ -25,9 +25,9 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/media', protectRoute, mediaRoutes);
-app.use('/api/v1/search', protectRoute, searchRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/media', protectRoute, mediaRoutes);
+app.use('/api/search', protectRoute, searchRoutes);
 
 app.listen(PORT, () => {
     console.log('server is running on PORT: ' + PORT);
