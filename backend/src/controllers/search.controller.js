@@ -13,17 +13,6 @@ export const searchPerson = async (req, res) => {
             return res.status(404).json({ message: '검색 결과가 없습니다.' });
         }
 
-        await User.findByIdAndUpdate(req.user._id, {
-            $push: {
-                searchHistory: {
-                    id: response.results[0].id,
-                    image: response.results[0].profile_path,
-                    title: response.results[0].name,
-                    searchType: 'person',
-                    createdAt: new Date(),
-                },
-            },
-        });
         res.status(200).json({ success: true, content: response.results });
     } catch (error) {
         console.error('Error in searchPerson controller: ', error);
@@ -45,17 +34,7 @@ export const searchMovie = async (req, res) => {
         if (response.results.length === 0) {
             return res.status(404).json({ message: '검색 결과가 없습니다.' });
         }
-        await User.findByIdAndUpdate(req.user._id, {
-            $push: {
-                searchHistory: {
-                    id: response.results[0].id,
-                    image: response.results[0].poster_path,
-                    title: response.results[0].title,
-                    searchType: 'movie',
-                    createdAt: new Date(),
-                },
-            },
-        });
+
         res.status(200).json({ success: true, content: response.results });
     } catch (error) {
         console.error('Error in searchMovie controller: ', error);
@@ -76,17 +55,6 @@ export const searchTv = async (req, res) => {
         if (response.results.length === 0) {
             return res.status(404).json({ message: '검색 결과가 없습니다.' });
         }
-        await User.findByIdAndUpdate(req.user._id, {
-            $push: {
-                searchHistory: {
-                    id: response.results[0].id,
-                    image: response.results[0].poster_path,
-                    title: response.results[0].name,
-                    searchType: 'tv',
-                    createdAt: new Date(),
-                },
-            },
-        });
 
         res.status(200).json({ success: true, content: response.results });
     } catch (error) {
@@ -110,6 +78,35 @@ export const getSearchHistory = async (req, res) => {
             message: '서버 오류가 발생했습니다.',
         });
         console.error('Error in getSearchHistory controller: ', error);
+    }
+};
+
+export const addSearchHistory = async (req, res) => {
+    const { id, image, title, searchType } = req.body;
+
+    try {
+        await User.findByIdAndUpdate(req.user._id, {
+            $push: {
+                searchHistory: {
+                    id,
+                    image,
+                    title,
+                    searchType,
+                    createdAt: new Date(),
+                },
+            },
+        });
+
+        res.status(200).json({
+            success: true,
+            message: '검색 기록이 추가되었습니다.',
+        });
+    } catch (error) {
+        console.error('Error in addSearchHistory controller: ', error);
+        res.status(500).json({
+            success: false,
+            message: '서버 오류가 발생했습니다.',
+        });
     }
 };
 
