@@ -1,8 +1,8 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './store/store';
-import { checkAuth } from './store/slices/authSlice'
+import { checkAuth } from './store/slices/authSlice';
 
 import { Toaster } from 'react-hot-toast';
 import { Loader } from 'lucide-react';
@@ -10,8 +10,10 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import HomePage from './pages/home/HomePage';
 import Footer from './components/Footer';
+import WatchPage from './pages/WatchPage';
 
 function App() {
+    const { pathname } = useLocation();
     const dispatch = useDispatch<AppDispatch>();
     const { authUser, isCheckingAuth } = useSelector(
         (state: RootState) => state.auth
@@ -20,6 +22,10 @@ function App() {
     useEffect(() => {
         dispatch(checkAuth());
     }, [dispatch]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     if (isCheckingAuth && !authUser)
         return (
@@ -38,6 +44,12 @@ function App() {
                 <Route
                     path='/signup'
                     element={!authUser ? <SignupPage /> : <Navigate to='/' />}
+                />
+                <Route
+                    path='/watch/:id'
+                    element={
+                        authUser ? <WatchPage /> : <Navigate to='/login' />
+                    }
                 />
             </Routes>
             <Footer />

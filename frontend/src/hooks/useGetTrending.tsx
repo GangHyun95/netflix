@@ -15,17 +15,23 @@ type TrendingContent = {
 } | null;
 
 export default function useGetTrending() {
-    const [trendingContent, setTrendingContent] = useState<TrendingContent>(null);
+    const [trendingContent, setTrendingContent] =
+        useState<TrendingContent>(null);
     const { contentType } = useSelector((state: RootState) => state.content);
 
     useEffect(() => {
         const getTrendingContent = async () => {
-            const res = await axiosInstance.get(`/media/trending`, {
-                params: {
-                    type: contentType,
-                },
-            });
-            setTrendingContent(res.data.content);
+            try {
+                const res = await axiosInstance.get(`/media/trending`, {
+                    params: {
+                        type: contentType,
+                    },
+                });
+                setTrendingContent(res.data.content);
+            } catch (error) {
+                console.error('Failed to fetch trending content:', error);
+                setTrendingContent(null);
+            }
         };
 
         getTrendingContent();

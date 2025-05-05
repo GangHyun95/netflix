@@ -32,12 +32,17 @@ export default function MovieSlider({
 
     useEffect(() => {
         const getMedia = async () => {
-            const res = await axiosInstance.get(`/media/${category.key}`, {
-                params: {
-                    type: contentType,
-                },
-            });
-            setMedia(res.data.content);
+            try {
+                const res = await axiosInstance.get(`/media/${category.key}`, {
+                    params: {
+                        type: contentType,
+                    },
+                });
+                setMedia(res.data.content);
+            } catch (error) {
+                console.error('Failed to fetch media:', error);
+                setMedia([]);
+            }
         };
 
         getMedia();
