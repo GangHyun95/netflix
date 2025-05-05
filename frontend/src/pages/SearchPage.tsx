@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setContentType } from '../store/slices/contentSlice';
 import { Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { axiosInstance } from '../lib/axios';
 import { AxiosError } from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ORIGINAL_IMG_BASE_URL } from '../utils/constants';
 import { RootState } from '../store/store';
 
@@ -22,26 +22,20 @@ export default function SearchPage() {
         'movie'
     );
     const [searchTerm, setSearchTerm] = useState('');
-
     const [results, setResults] = useState<SearchResult[]>([]);
 
     const dispatch = useDispatch();
     const { contentType } = useSelector((state: RootState) => state.content);
 
-    const handleTabClick = (tab: 'movie' | 'tv' | 'person') => {
-        setActiveTab(tab);
-        tab === 'movie'
-            ? dispatch(setContentType('movie'))
-            : dispatch(setContentType('tv'));
-        setResults([]);
-    };
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const handleSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const fetchResults = async (
+        tab: 'movie' | 'tv' | 'person',
+        query: string
+    ) => {
         try {
-            const res = await axiosInstance.get(
-                `/search/${activeTab}/${searchTerm}`
-            );
+            const res = await axiosInstance.get(`/search/${tab}/${query}`);
             setResults(res.data.content);
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;
@@ -52,6 +46,35 @@ export default function SearchPage() {
             }
         }
     };
+
+    const handleTabClick = (tab: 'movie' | 'tv' | 'person') => {
+        setActiveTab(tab);
+        setSearchTerm('');
+        setResults([]);
+        navigate(`?tab=${tab}`);
+    };
+
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!searchTerm.trim()) {
+            toast.error('검색어를 입력하세요.');
+            return;
+        }
+        navigate(`?tab=${activeTab}&query=${searchTerm}`);
+        fetchResults(activeTab, searchTerm);
+    };
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const tab = params.get('tab') as 'movie' | 'tv' | 'person';
+        const query = params.get('query');
+        
+        if (tab && tab !== activeTab) setActiveTab(tab);
+        if (query && query !== searchTerm) {
+            setSearchTerm(query);
+            fetchResults(tab || 'movie', query);
+        }
+    }, [location.search]);
 
     return (
         <div className='min-h-screen'>
@@ -129,7 +152,12 @@ export default function SearchPage() {
                                     </div>
                                 ) : (
                                     <Link
-                                        to={'/watch/' + result.id + '?type=' + contentType}
+                                        to={
+                                            '/watch/' +
+                                            result.id +
+                                            '?type=' +
+                                            contentType
+                                        }
                                         onClick={() => {
                                             dispatch(setContentType(activeTab));
                                         }}

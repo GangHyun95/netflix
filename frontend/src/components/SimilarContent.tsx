@@ -57,7 +57,7 @@ export default function SimilarContent() {
             {similarContent.length > 0 && (
                 <div className='mt-12 max-w-5xl mx-auto relative'>
                     <h3 className='text-3xl font-bold my-8'>
-                        Similar Movies/Tv Show
+                        유사한 영화/TV 프로그램
                     </h3>
                     <div
                         className='flex overflow-x-scroll scrollbar-hide gap-4 pb-4 group'
