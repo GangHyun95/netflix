@@ -15,6 +15,7 @@ import WatchPage from './pages/WatchPage';
 import Navbar from './components/Navbar';
 import SearchPage from './pages/SearchPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
     const { pathname } = useLocation();
@@ -68,6 +69,13 @@ function App() {
                     path='/search'
                     element={
                         authUser ? <SearchPage /> : <Navigate to='/login' />
+                    }
+                />
+
+                <Route
+                    path='/profile'
+                    element={
+                        authUser ? <ProfilePage /> : <Navigate to='/login' />
                     }
                 />
                 <Route path='/*' element={<NotFoundPage />} />

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosInstance } from '../../lib/axios.ts'
+import { axiosInstance } from '../../lib/axios.ts';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 
@@ -9,6 +9,7 @@ type AuthState = {
     isLoggingIn: boolean;
     isLoggingOut: boolean;
     isCheckingAuth: boolean;
+    isUpdatingProfile: boolean;
     error: string | null;
 };
 
@@ -16,7 +17,10 @@ type UserType = {
     email: string;
     username?: string;
     password: string;
-    image?: string;
+    avatar?: string;
+    profilePic?: string;
+    createdAt?: string;
+    updatedAt?: string;
 };
 
 const initialState: AuthState = {
@@ -25,6 +29,7 @@ const initialState: AuthState = {
     isLoggingIn: false,
     isLoggingOut: false,
     isCheckingAuth: true,
+    isUpdatingProfile: false,
     error: null,
 };
 
@@ -98,6 +103,24 @@ export const checkAuth = createAsyncThunk(
     }
 );
 
+export const updateProfile = createAsyncThunk(
+    'auth/updateProfile',
+    async (data: { profilePic: string }, { rejectWithValue }) => {
+        try {
+            const res = await axiosInstance.put('/auth/update-profile', data);
+            toast.success('프로필 업데이트 성공');
+            return res.data.user;
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+            const errorMessage =
+                err.response?.data?.message ||
+                '프로필 업데이트 중 오류가 발생했습니다.';
+            toast.error(errorMessage);
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -158,6 +181,20 @@ const authSlice = createSlice({
             .addCase(checkAuth.rejected, (state) => {
                 state.isCheckingAuth = false;
                 state.authUser = null;
+            })
+
+            // 프로필 업데이트
+            .addCase(updateProfile.pending, (state) => {
+                state.isUpdatingProfile = true;
+                state.error = null;
+            })
+            .addCase(updateProfile.fulfilled, (state, action) => {
+                state.isUpdatingProfile = false;
+                state.authUser = action.payload;
+            })
+            .addCase(updateProfile.rejected, (state, action) => {
+                state.isUpdatingProfile = false;
+                state.error = action.payload as string;
             });
     },
 });

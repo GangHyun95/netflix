@@ -68,7 +68,7 @@ export default function SearchPage() {
         const params = new URLSearchParams(location.search);
         const tab = params.get('tab') as 'movie' | 'tv' | 'person';
         const query = params.get('query');
-        
+
         if (tab && tab !== activeTab) setActiveTab(tab);
         if (query && query !== searchTerm) {
             setSearchTerm(query);
@@ -118,7 +118,13 @@ export default function SearchPage() {
                         type='text'
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder={'Search for a ' + activeTab}
+                        placeholder={
+                            activeTab === 'movie'
+                                ? '영화를 검색하세요'
+                                : activeTab === 'tv'
+                                ? 'TV 프로그램을 검색하세요'
+                                : '인물을 검색하세요'
+                        }
                         className='w-full p-2 rounded bg-gray-800'
                     />
                     <button className='bg-red-600 hover:bg-red-700 p-2 rounded'>

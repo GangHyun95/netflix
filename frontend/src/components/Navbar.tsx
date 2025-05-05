@@ -24,7 +24,7 @@ export default function Navbar() {
         if (pathname === '/' && contentType === type) {
             return;
         }
-        
+
         dispatch(setContentType(type));
     };
 
@@ -70,11 +70,13 @@ export default function Navbar() {
                 <Link to='/search'>
                     <Search className='size-6 cursor-pointer' />
                 </Link>
-                <img
-                    src={authUser?.image}
-                    alt='Avatar'
-                    className='h-8 rounded cursor-pointer'
-                />
+                <Link to='/profile'>
+                    <img
+                        src={authUser?.avatar}
+                        alt='Avatar'
+                        className='h-8 rounded cursor-pointer'
+                    />
+                </Link>
                 <LogOut
                     className='size-6 cursor-pointer'
                     onClick={() => dispatch(logout())}
