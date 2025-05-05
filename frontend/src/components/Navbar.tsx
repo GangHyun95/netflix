@@ -70,7 +70,7 @@ export default function Navbar() {
             </div>
             {/* mobile navbar items */}
             {isMobileMenuOpen && (
-                <div className='w-full sm:hidden mt-4 z-50 bg-black border rounded border-gray-800'>
+                <div className='w-full sm:hidden mt-4 z-50 border rounded border-gray-800'>
                     <Link
                         to={'/?type=movie'}
                         className='block hover:underline p-2'

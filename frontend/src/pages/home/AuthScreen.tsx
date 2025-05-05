@@ -33,7 +33,7 @@ export default function AuthScreen() {
             </header>
 
             {/* hero section */}
-            <div className='flex flex-col items-center justify-center text-center py-40 text-white max-w-6xl mx-auto'>
+            <div className='flex flex-col items-center justify-center text-center py-40 max-w-6xl mx-auto'>
                 <h1 className='text-4xl md:text-6xl font-bold mb-4 leading-tight'>
                     영화, 시리즈 등을 무제한으로
                 </h1>
@@ -66,7 +66,7 @@ export default function AuthScreen() {
 
             {/* separator */}
             <div className='h-2 w-full bg-[#232323]' aria-hidden='true' />
-            <div className='py-10 bg-black text-white'>
+            <div className='py-10 bg-black'>
                 <div className='flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col px-4 md:px-2'>
                     {/* left */}
                     <div className='flex-1 text-center md:text-left'>
@@ -99,7 +99,7 @@ export default function AuthScreen() {
             </div>
             {/* separator */}
             <div className='h-2 w-full bg-[#232323]' aria-hidden='true' />
-            <div className='py-10 bg-black text-white'>
+            <div className='py-10 bg-black'>
                 <div className='flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col-reverse px-4 md:px-2'>
                     {/* left */}
                     <div className='flex-1'>
@@ -148,7 +148,7 @@ export default function AuthScreen() {
 
             {/* separator */}
             <div className='h-2 w-full bg-[#232323]' aria-hidden='true' />
-            <div className='py-10 bg-black text-white'>
+            <div className='py-10 bg-black'>
                 <div className='flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col px-4 md:px-2'>
                     {/* left */}
                     <div className='flex-1 text-center md:text-left'>
@@ -183,7 +183,7 @@ export default function AuthScreen() {
             {/* separator */}
             <div className='h-2 w-full bg-[#232323]' aria-hidden='true' />
 
-            <div className='py-10 bg-black text-white'>
+            <div className='py-10 bg-black'>
                 <div className='flex max-w-6xl mx-auto items-center justify-center flex-col-reverse md:flex-row px-4 md:px-2'>
                     {/* left */}
                     <div className='flex-1 relative'>

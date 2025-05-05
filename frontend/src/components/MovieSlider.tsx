@@ -68,7 +68,7 @@ export default function MovieSlider({
 
     return (
         <div
-            className='text-white relative px-5 md:px-20'
+            className='relative px-5 md:px-20'
             onMouseEnter={() => setShowArrows(true)}
             onMouseLeave={() => setShowArrows(false)}
         >
@@ -103,14 +103,14 @@ export default function MovieSlider({
             {showArrows && (
                 <>
                     <button
-                        className='absolute top-1/2 -translate-y-1/2 left-5 md:left-24 flex items-center justify-center size-12 rounded-full bg-black/50 hover:bg-black/75 text-white z-10 cursor-pointer'
+                        className='absolute top-1/2 -translate-y-1/2 left-5 md:left-24 flex items-center justify-center size-12 rounded-full bg-black/50 hover:bg-black/75 z-10 cursor-pointer'
                         onClick={scrollLeft}
                     >
                         <ChevronLeft size={24} />
                     </button>
 
                     <button
-                        className='absolute top-1/2 -translate-y-1/2 right-5 md:right-24 flex items-center justify-center size-12 rounded-full bg-black/50 hover:bg-black/75 text-white z-10 cursor-pointer'
+                        className='absolute top-1/2 -translate-y-1/2 right-5 md:right-24 flex items-center justify-center size-12 rounded-full bg-black/50 hover:bg-black/75 z-10 cursor-pointer'
                         onClick={scrollRight}
                     >
                         <ChevronRight size={24} />

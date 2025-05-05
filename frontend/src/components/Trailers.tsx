@@ -46,14 +46,13 @@ export default function Trailers() {
     };
     const handleNext = () => {
         if (currentTrailerIdx < trailers.length - 1) {
-            console.log('Test');
             setCurrentTrailerIdx(currentTrailerIdx + 1);
         }
     };
     if (loading)
         return (
             <>
-                <div className='min-h-screen bg-black mb-8 p-2 sm:px-10 md:px-32 overflow-hidden'>
+                <div className='min-h-screen mb-8 p-2 sm:px-10 md:px-32 overflow-hidden'>
                     <div className='animate-pulse overflow-hidden'>
                         <div className='bg-gray-700 rounded-md w-full h-[70vh] mx-auto mb-4 shimmer'></div>
                     </div>
@@ -61,52 +60,50 @@ export default function Trailers() {
             </>
         );
     return (
-        <>
-            <div className='relative aspect-video mb-8 p-2 sm:px-10 md:px-32'>
-                {trailers.length > 0 && (
-                    <div className='flex justify-between items-center mb-4'>
-                        <button
-                            className={`bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded absolute left-0 top-5/12 -translate-y-1/2 ${
-                                currentTrailerIdx === 0
-                                    ? 'cursor-not-allowed opacity-50'
-                                    : 'cursor-pointer'
-                            }`}
-                            onClick={handlePrev}
-                            disabled={currentTrailerIdx === 0}
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
+        <div className='relative aspect-video mb-8 p-2 sm:px-10 md:px-32'>
+            {trailers.length > 0 && (
+                <div className='flex justify-between items-center mb-4'>
+                    <button
+                        className={`bg-gray-500/70 hover:bg-gray-500 py-2 px-4 rounded absolute left-0 top-5/12 -translate-y-1/2 ${
+                            currentTrailerIdx === 0
+                                ? 'cursor-not-allowed opacity-50'
+                                : 'cursor-pointer'
+                        }`}
+                        onClick={handlePrev}
+                        disabled={currentTrailerIdx === 0}
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
 
-                        <button
-                            className={`bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded absolute right-0 top-5/12 -translate-y-1/2 ${
-                                currentTrailerIdx === trailers.length - 1
-                                    ? 'cursor-not-allowed opacity-50'
-                                    : 'cursor-pointer'
-                            }`}
-                            onClick={handleNext}
-                            disabled={currentTrailerIdx === trailers.length - 1}
-                        >
-                            <ChevronRight size={24} />
-                        </button>
-                    </div>
-                )}
+                    <button
+                        className={`bg-gray-500/70 hover:bg-gray-500 py-2 px-4 rounded absolute right-0 top-5/12 -translate-y-1/2 ${
+                            currentTrailerIdx === trailers.length - 1
+                                ? 'cursor-not-allowed opacity-50'
+                                : 'cursor-pointer'
+                        }`}
+                        onClick={handleNext}
+                        disabled={currentTrailerIdx === trailers.length - 1}
+                    >
+                        <ChevronRight size={24} />
+                    </button>
+                </div>
+            )}
 
-                {trailers.length > 0 && (
-                    <ReactPlayer
-                        controls={true}
-                        width={'100%'}
-                        height={'70vh'}
-                        className='mx-auto overflow-hidden rounded-lg'
-                        url={`https://www.youtube.com/watch?v=${trailers[currentTrailerIdx].key}`}
-                    />
-                )}
+            {trailers.length > 0 && (
+                <ReactPlayer
+                    controls={true}
+                    width={'100%'}
+                    height={'70vh'}
+                    className='mx-auto overflow-hidden rounded-lg'
+                    url={`https://www.youtube.com/watch?v=${trailers[currentTrailerIdx].key}`}
+                />
+            )}
 
-                {trailers.length === 0 && (
-                    <h2 className='text-xl text-center mt-5 p-60'>
-                        이용 가능한 트레일러가 없습니다. 😢
-                    </h2>
-                )}
-            </div>
-        </>
+            {trailers.length === 0 && (
+                <h2 className='text-xl text-center mt-5 py-60'>
+                    이용 가능한 트레일러가 없습니다. 😢
+                </h2>
+            )}
+        </div>
     );
 }

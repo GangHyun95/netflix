@@ -32,7 +32,7 @@ export default function SignupPage() {
 
             <div className='flex justify-center items-center mt-20 mx-3'>
                 <div className='w-full max-w-md p-8 space-y-6 bg-black/60 rounded-lg shadow-md'>
-                    <h1 className='text-center text-white text-2xl font-bold mb-4'>
+                    <h1 className='text-center text-2xl font-bold mb-4'>
                         회원가입
                     </h1>
 
@@ -47,7 +47,7 @@ export default function SignupPage() {
                             <input
                                 id='email'
                                 type='email'
-                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
+                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent focus:outline-none focus:ring'
                                 placeholder='이메일을 입력하세요.'
                                 value={formData.email}
                                 onChange={(e) =>
@@ -68,7 +68,7 @@ export default function SignupPage() {
                             <input
                                 id='username'
                                 type='text'
-                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
+                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent focus:outline-none focus:ring'
                                 placeholder='사용자 이름을 입력하세요.'
                                 value={formData.username}
                                 onChange={(e) =>
@@ -89,7 +89,7 @@ export default function SignupPage() {
                             <input
                                 id='password'
                                 type='password'
-                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
+                                className='w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent focus:outline-none focus:ring'
                                 placeholder='비밀번호를 입력하세요.'
                                 value={formData.password}
                                 onChange={(e) =>

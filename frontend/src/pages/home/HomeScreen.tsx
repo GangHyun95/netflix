@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import Navbar from '../../components/Navbar';
 import { Info, Play } from 'lucide-react';
 import useGetTrending from '../../hooks/useGetTrending';
 import {
@@ -19,17 +18,14 @@ export default function HomeScreen() {
 
     if (!trendingContent)
         return (
-            <div className='h-screen text-white relative'>
-                <Navbar />
+            <div className='h-screen relative'>
                 <div className='absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center -z-10 shimmer'></div>
             </div>
         );
 
     return (
         <>
-            <div className='relative h-screen text-white'>
-                <Navbar />
-
+            <div className='relative h-screen'>
                 {imgLoading && (
                     <div className='absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center -z-10 shimmer'></div>
                 )}
@@ -77,7 +73,7 @@ export default function HomeScreen() {
                         </Link>
                         <Link
                             to={`/watch/${trendingContent?.id}/?type=${contentType}`}
-                            className='bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded flex items-center'
+                            className='bg-gray-500/70 hover:bg-gray-500 py-2 px-4 rounded flex items-center'
                         >
                             <Info className='size-6 mr-2' />
                             상세 정보
@@ -86,7 +82,7 @@ export default function HomeScreen() {
                 </div>
             </div>
 
-            <div className='flex flex-col gap-10 bg-black py-10'>
+            <div className='flex flex-col gap-10 py-10'>
                 {contentType === 'movie'
                     ? MOVIE_CATEGORIES.map((category) => (
                           <MovieSlider key={category.key} category={category} />

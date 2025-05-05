@@ -12,6 +12,7 @@ import HomePage from './pages/home/HomePage';
 import Footer from './components/Footer';
 import WatchPage from './pages/WatchPage';
 import { setContentType } from './store/slices/contentSlice';
+import Navbar from './components/Navbar';
 
 function App() {
     const { pathname } = useLocation();
@@ -33,7 +34,6 @@ function App() {
         if (type === 'tv' || type === 'movie') {
             dispatch(setContentType(type));
         }
-        console.log("TEST")
     }, []);
 
     if (isCheckingAuth && !authUser)
@@ -44,6 +44,7 @@ function App() {
         );
     return (
         <>
+            {authUser && <Navbar />}
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route

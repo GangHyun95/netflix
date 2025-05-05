@@ -48,7 +48,7 @@ export default function ContentDetails() {
     if (loading)
         return (
             <>
-                <div className='max-w-6xl mx-auto h-screen bg-black'>
+                <div className='max-w-6xl mx-auto h-screen '>
                     <div className='animate-pulse flex gap-20'>
                         <div className='flex-1'>
                             <div className='bg-gray-700 rounded-md w-full h-12 mb-8 shimmer'></div>
@@ -65,12 +65,11 @@ export default function ContentDetails() {
 
     if (!content) {
         return (
-            <div className='bg-black text-white h-screen'>
+            <div className=''>
                 <div className='max-w-6xl mx-auto'>
-                    <Navbar />
-                    <div className='text-center mx-auto px-4 py-8 h-full mt-40'>
+                    <div className='text-center mx-auto px-4 py-8 h-full mb-32'>
                         <h2 className='text-2xl sm:text-5xl font-bold text-balance'>
-                            Content not found 🥲
+                            CONTENT NOT FOUND 🥲
                         </h2>
                     </div>
                 </div>
