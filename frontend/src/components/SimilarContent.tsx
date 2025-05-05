@@ -68,7 +68,7 @@ export default function SimilarContent() {
                             return (
                                 <Link
                                     key={content?.id}
-                                    to={`/watch/${content?.id}`}
+                                    to={`/watch/${content?.id}/?type=${contentType}`}
                                     className='w-52 flex-none'
                                 >
                                     <img

@@ -27,7 +27,7 @@ export default function Navbar() {
                 {/* desktop navbar items */}
                 <div className='hidden sm:flex gap-2 items-center'>
                     <Link
-                        to='/'
+                        to='/?type=movie'
                         className='hover:underline'
                         onClick={() => dispatch(setContentType('movie'))}
                     >
@@ -35,7 +35,7 @@ export default function Navbar() {
                     </Link>
                     <div className='text-gray-500'>|</div>
                     <Link
-                        to='/'
+                        to='/?type=tv'
                         className='hover:underline'
                         onClick={() => dispatch(setContentType('tv'))}
                     >
@@ -72,14 +72,14 @@ export default function Navbar() {
             {isMobileMenuOpen && (
                 <div className='w-full sm:hidden mt-4 z-50 bg-black border rounded border-gray-800'>
                     <Link
-                        to={'/'}
+                        to={'/?type=movie'}
                         className='block hover:underline p-2'
                         onClick={toggleMobileMenu}
                     >
                         영화
                     </Link>
                     <Link
-                        to={'/'}
+                        to={'/?type=tv'}
                         className='block hover:underline p-2'
                         onClick={toggleMobileMenu}
                     >

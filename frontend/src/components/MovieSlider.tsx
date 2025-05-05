@@ -83,7 +83,7 @@ export default function MovieSlider({
                 {media.map((item) => (
                     <Link
                         key={item.id}
-                        to={`/watch/${item.id}`}
+                        to={`/watch/${item.id}/?type=${contentType}`}
                         className='min-w-[250px] relative group'
                     >
                         <div className='rounded-lg overflow-hidden'>

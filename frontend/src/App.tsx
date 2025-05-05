@@ -11,6 +11,7 @@ import SignupPage from './pages/SignupPage';
 import HomePage from './pages/home/HomePage';
 import Footer from './components/Footer';
 import WatchPage from './pages/WatchPage';
+import { setContentType } from './store/slices/contentSlice';
 
 function App() {
     const { pathname } = useLocation();
@@ -26,6 +27,14 @@ function App() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
+
+    useEffect(() => {
+        const type = new URLSearchParams(location.search).get('type');
+        if (type === 'tv' || type === 'movie') {
+            dispatch(setContentType(type));
+        }
+        console.log("TEST")
+    }, []);
 
     if (isCheckingAuth && !authUser)
         return (

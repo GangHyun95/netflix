@@ -33,7 +33,7 @@ export default function HomeScreen() {
                 {imgLoading && (
                     <div className='absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center -z-10 shimmer'></div>
                 )}
-                
+
                 <img
                     src={ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path}
                     alt='Hero img'
@@ -69,14 +69,14 @@ export default function HomeScreen() {
 
                     <div className='flex mt-8'>
                         <Link
-                            to={`/watch/${trendingContent?.id}`}
+                            to={`/watch/${trendingContent?.id}/?type=${contentType}`}
                             className='bg-white hover:bg-white/80 text-black font-bold py-2 px-4 rounded mr-4 flex items-center'
                         >
                             <Play className='size-6 mr-2 fill-black' />
                             재생
                         </Link>
                         <Link
-                            to='/watch/123'
+                            to={`/watch/${trendingContent?.id}/?type=${contentType}`}
                             className='bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded flex items-center'
                         >
                             <Info className='size-6 mr-2' />
