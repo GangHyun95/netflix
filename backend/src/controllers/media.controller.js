@@ -56,7 +56,7 @@ export const getMediaDetails = async (req, res) => {
         }
 
         const data = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/${type}/${id}?language=en-US`
+            `https://api.themoviedb.org/3/${type}/${id}?language=ko-KR`
         );
         res.status(200).json({ success: true, content: data });
     } catch (error) {
@@ -80,7 +80,7 @@ export const getSimilarMedia = async (req, res) => {
         }
 
         const data = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/${type}/${id}/similar?language=en-US&page=1`
+            `https://api.themoviedb.org/3/${type}/${id}/similar?language=ko-KR&page=1`
         );
         res.status(200).json({ success: true, similar: data.results });
     } catch (error) {

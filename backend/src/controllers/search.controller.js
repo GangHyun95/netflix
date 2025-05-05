@@ -6,7 +6,7 @@ export const searchPerson = async (req, res) => {
 
     try {
         const response = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/search/person?query=${query}&include_adult=false&language=en-US&page=1`
+            `https://api.themoviedb.org/3/search/person?query=${query}&include_adult=false&language=ko-KR&page=1`
         );
 
         if (response.results.length === 0) {
@@ -39,7 +39,7 @@ export const searchMovie = async (req, res) => {
 
     try {
         const response = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`
+            `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=ko-KR&page=1`
         );
 
         if (response.results.length === 0) {
@@ -71,7 +71,7 @@ export const searchTv = async (req, res) => {
 
     try {
         const response = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=false&language=en-US&page=1`
+            `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=false&language=ko-KR&page=1`
         );
         if (response.results.length === 0) {
             return res.status(404).json({ message: '검색 결과가 없습니다.' });
@@ -115,11 +115,15 @@ export const getSearchHistory = async (req, res) => {
 
 export const deleteSearchHistory = async (req, res) => {
     const { id } = req.params;
+    const { createdAt } = req.query;
 
     try {
         await User.findByIdAndUpdate(req.user._id, {
             $pull: {
-                searchHistory: { id: parseInt(id) },
+                searchHistory: {
+                    id: parseInt(id),
+                    createdAt: new Date(createdAt),
+                },
             },
         });
 
