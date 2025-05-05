@@ -64,6 +64,19 @@ export default function SearchPage() {
         fetchResults(activeTab, searchTerm);
     };
 
+    const handleAddToHistory = async (item: SearchResult) => {
+        try {
+            await axiosInstance.post('/search/history', {
+                id: item.id,
+                image: item.poster_path || item.profile_path,
+                title: item.title || item.name,
+                searchType: activeTab,
+            });
+        } catch (error) {
+            console.error("검색 기록 추가 중 오류 발생:", error);
+        }
+    };
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const tab = params.get('tab') as 'movie' | 'tv' | 'person';
@@ -165,6 +178,7 @@ export default function SearchPage() {
                                             contentType
                                         }
                                         onClick={() => {
+                                            handleAddToHistory(result)
                                             dispatch(setContentType(activeTab));
                                         }}
                                     >

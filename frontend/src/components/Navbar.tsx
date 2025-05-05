@@ -63,6 +63,15 @@ export default function Navbar() {
                     >
                         TV 프로그램
                     </Link>
+                    <div className='text-gray-500'>|</div>
+                    <Link
+                        to='/history'
+                        className={`hover:underline ${
+                            pathname === '/history' ? 'underline' : ''
+                        }`}
+                    >
+                        검색 기록
+                    </Link>
                 </div>
             </div>
 
@@ -112,6 +121,15 @@ export default function Navbar() {
                         onClick={() => handleTabClick('tv')}
                     >
                         TV 프로그램
+                    </Link>
+                    <Link
+                        to={'/history'}
+                        className={`block hover:underline p-2 ${
+                            pathname === '/history' ? 'underline' : ''
+                        }`}
+                        onClick={toggleMobileMenu}
+                    >
+                        검색 기록
                     </Link>
                 </div>
             )}

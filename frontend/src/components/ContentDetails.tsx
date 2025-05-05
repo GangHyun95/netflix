@@ -3,7 +3,6 @@ import { axiosInstance } from '../lib/axios';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import Navbar from './Navbar';
 import { formatReleaseDate } from '../utils/dateFunction';
 import { SMALL_IMG_BASE_URL } from '../utils/constants';
 

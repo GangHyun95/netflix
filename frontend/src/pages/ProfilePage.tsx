@@ -10,7 +10,6 @@ export default function ProfilePage() {
         (state: RootState) => state.auth
     );
 
-    console.log(authUser);
     const [selectedImg, setSelectedImg] = useState<string | null>(null);
     const handleImageUpload = async (
         e: React.ChangeEvent<HTMLInputElement>

@@ -16,7 +16,6 @@ const contentSlice = createSlice({
             state.contentType = action.payload;
         },
     },
-    extraReducers: (builder) => {},
 });
 
 export const { setContentType } = contentSlice.actions;
