@@ -56,7 +56,7 @@ export default function SimilarContent() {
         <>
             {similarContent.length > 0 && (
                 <div className='mt-12 max-w-5xl mx-auto relative'>
-                    <h3 className='text-3xl font-bold mb-4'>
+                    <h3 className='text-3xl font-bold my-8'>
                         Similar Movies/Tv Show
                     </h3>
                     <div

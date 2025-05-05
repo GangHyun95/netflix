@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './store/store';
 import { checkAuth } from './store/slices/authSlice';
+import { setContentType } from './store/slices/contentSlice';
 
 import { Toaster } from 'react-hot-toast';
 import { Loader } from 'lucide-react';
@@ -11,8 +12,8 @@ import SignupPage from './pages/SignupPage';
 import HomePage from './pages/home/HomePage';
 import Footer from './components/Footer';
 import WatchPage from './pages/WatchPage';
-import { setContentType } from './store/slices/contentSlice';
 import Navbar from './components/Navbar';
+import SearchPage from './pages/SearchPage';
 
 function App() {
     const { pathname } = useLocation();
@@ -59,6 +60,13 @@ function App() {
                     path='/watch/:id'
                     element={
                         authUser ? <WatchPage /> : <Navigate to='/login' />
+                    }
+                />
+
+                <Route
+                    path='/search'
+                    element={
+                        authUser ? <SearchPage /> : <Navigate to='/login' />
                     }
                 />
             </Routes>

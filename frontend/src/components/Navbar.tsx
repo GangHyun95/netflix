@@ -4,20 +4,34 @@ import { AppDispatch, RootState } from '../store/store';
 import { logout } from '../store/slices/authSlice';
 import { setContentType } from '../store/slices/contentSlice';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LogOut, Menu, Search } from 'lucide-react';
 
 export default function Navbar() {
+    const { pathname } = useLocation();
     const dispatch = useDispatch<AppDispatch>();
     const { authUser } = useSelector((state: RootState) => state.auth);
+    const { contentType } = useSelector((state: RootState) => state.content);
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+    const handleTabClick = (type: 'movie' | 'tv') => {
+        if (isMobileMenuOpen) {
+            toggleMobileMenu();
+        }
+
+        if (pathname === '/' && contentType === type) {
+            return;
+        }
+        
+        dispatch(setContentType(type));
+    };
+
     return (
-        <header className='max-w-6xl mx-auto flex flex-wrap items-center justify-between p-4 h-20'>
+        <header className='relative max-w-6xl mx-auto flex flex-wrap items-center justify-between p-4 h-20'>
             <div className='flex items-center gap-10 z-50'>
-                <Link to='/'>
+                <Link to={`/?type=${contentType}`}>
                     <img
                         src='/netflix-logo.png'
                         alt='Netflix Logo'
@@ -28,16 +42,24 @@ export default function Navbar() {
                 <div className='hidden sm:flex gap-2 items-center'>
                     <Link
                         to='/?type=movie'
-                        className='hover:underline'
-                        onClick={() => dispatch(setContentType('movie'))}
+                        className={`hover:underline ${
+                            pathname === '/' && contentType === 'movie'
+                                ? 'underline'
+                                : ''
+                        }`}
+                        onClick={() => handleTabClick('movie')}
                     >
                         영화
                     </Link>
                     <div className='text-gray-500'>|</div>
                     <Link
                         to='/?type=tv'
-                        className='hover:underline'
-                        onClick={() => dispatch(setContentType('tv'))}
+                        className={`hover:underline ${
+                            pathname === '/' && contentType === 'tv'
+                                ? 'underline'
+                                : ''
+                        }`}
+                        onClick={() => handleTabClick('tv')}
                     >
                         TV 프로그램
                     </Link>
@@ -70,18 +92,26 @@ export default function Navbar() {
             </div>
             {/* mobile navbar items */}
             {isMobileMenuOpen && (
-                <div className='w-full sm:hidden mt-4 z-50 border rounded border-gray-800'>
+                <div className='absolute top-20 left-0 bg-black/90 w-full sm:hidden z-50 border-none rounded p-2'>
                     <Link
                         to={'/?type=movie'}
-                        className='block hover:underline p-2'
-                        onClick={toggleMobileMenu}
+                        className={`block p-2 hover:underline ${
+                            pathname === '/' && contentType === 'movie'
+                                ? 'underline'
+                                : ''
+                        }`}
+                        onClick={() => handleTabClick('movie')}
                     >
                         영화
                     </Link>
                     <Link
                         to={'/?type=tv'}
-                        className='block hover:underline p-2'
-                        onClick={toggleMobileMenu}
+                        className={`block p-2 hover:underline ${
+                            pathname === '/' && contentType === 'tv'
+                                ? 'underline'
+                                : ''
+                        }`}
+                        onClick={() => handleTabClick('tv')}
                     >
                         TV 프로그램
                     </Link>
