@@ -6,11 +6,11 @@ export const searchPerson = async (req, res) => {
 
     try {
         const response = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/search/person?query=${query}include_adult=false&language=en-US&page=1`
+            `https://api.themoviedb.org/3/search/person?query=${query}&include_adult=false&language=en-US&page=1`
         );
 
         if (response.results.length === 0) {
-            return res.status(404).json({ message: 'No results found' });
+            return res.status(404).json({ message: '검색 결과가 없습니다.' });
         }
 
         await User.findByIdAndUpdate(req.user._id, {
@@ -39,11 +39,11 @@ export const searchMovie = async (req, res) => {
 
     try {
         const response = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/search/movie?query=${query}include_adult=false&language=en-US&page=1`
+            `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`
         );
 
         if (response.results.length === 0) {
-            return res.status(404).json({ message: 'No results found' });
+            return res.status(404).json({ message: '검색 결과가 없습니다.' });
         }
         await User.findByIdAndUpdate(req.user._id, {
             $push: {
@@ -71,10 +71,10 @@ export const searchTv = async (req, res) => {
 
     try {
         const response = await fetchFromTMDB(
-            `https://api.themoviedb.org/3/search/tv?query=${query}include_adult=false&language=en-US&page=1`
+            `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=false&language=en-US&page=1`
         );
         if (response.results.length === 0) {
-            return res.status(404).json({ message: 'No results found' });
+            return res.status(404).json({ message: '검색 결과가 없습니다.' });
         }
         await User.findByIdAndUpdate(req.user._id, {
             $push: {
@@ -111,7 +111,7 @@ export const getSearchHistory = async (req, res) => {
         });
         console.error('Error in getSearchHistory controller: ', error);
     }
-}
+};
 
 export const deleteSearchHistory = async (req, res) => {
     const { id } = req.params;
@@ -121,7 +121,7 @@ export const deleteSearchHistory = async (req, res) => {
             $pull: {
                 searchHistory: { id: parseInt(id) },
             },
-        })
+        });
 
         res.status(200).json({
             success: true,
