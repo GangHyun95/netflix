@@ -125,11 +125,8 @@ export const login = async (req, res) => {
             success: true,
             accessToken,
             user: {
-                _id: user._id,
-                email: user.email,
-                username: user.username,
-                avatar: user.avatar,
-                searchHistory: user.searchHistory,
+                ...user._doc,
+                password: '',
             },
         });
     } catch (error) {
@@ -224,7 +221,6 @@ export const googleLogin = async (req, res) => {
             await user.save();
         }
 
-        console.log("??");
         const accessToken = generateAccessToken(user._id);
         const refreshToken = generateRefreshToken(user._id);
 

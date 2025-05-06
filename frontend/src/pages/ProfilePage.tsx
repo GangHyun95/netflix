@@ -123,7 +123,13 @@ export default function ProfilePage() {
                             </div>
                             <div className='flex items-center justify-between py-2'>
                                 <span>계정 상태</span>
-                                <span className='text-green-500'>활성</span>
+                                <span className='text-white'>
+                                    {authUser?.googleId
+                                        ? 'Google 회원'
+                                        : authUser
+                                        ? '일반 회원'
+                                        : 'Unknown'}
+                                </span>
                             </div>
                         </div>
                     </div>

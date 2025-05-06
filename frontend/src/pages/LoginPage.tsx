@@ -27,7 +27,6 @@ export default function LoginPage() {
         dispatch(getGoogleClientId());
     }, [getGoogleClientId]);
 
-    console.log(googleClientId);
     if (!googleClientId) return <Loader />;
 
     return (

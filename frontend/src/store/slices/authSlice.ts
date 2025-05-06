@@ -24,6 +24,7 @@ type UserType = {
     profilePic?: string;
     createdAt?: string;
     updatedAt?: string;
+    googleId?: string;
 };
 
 const initialState: AuthState = {
@@ -261,7 +262,6 @@ const authSlice = createSlice({
             })
             .addCase(googleLogin.fulfilled, (state, action) => {
                 state.isLoggingIn = false;
-                console.log(action.payload);
                 state.authUser = action.payload.user;
                 state.accessToken = action.payload.accessToken;
             })
