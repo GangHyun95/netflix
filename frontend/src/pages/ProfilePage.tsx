@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
 import { updateProfile } from '../store/slices/authSlice';
+import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
     const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +17,14 @@ export default function ProfilePage() {
     ) => {
         const file = e.target.files?.[0];
         if (!file) return;
+
+        const maxSize = 1 * 1024 * 1024;
+        if (file.size > maxSize) {
+            toast.error(
+                '파일 크기가 너무 큽니다. 최대 1MB까지 업로드할 수 있습니다.'
+            );
+            return;
+        }
 
         const reader = new FileReader();
 
@@ -36,8 +45,12 @@ export default function ProfilePage() {
             <div className='max-w-2xl mx-auto px-4 py-8'>
                 <div className='bg-gray-800 rounded-xl p-6 space-y-8'>
                     <div className='text-center'>
-                        <h1 className='text-2xl font-semibold text-white'>프로필</h1>
-                        <p className='mt-2 text-gray-400'>프로필 정보를 확인하세요</p>
+                        <h1 className='text-2xl font-semibold text-white'>
+                            프로필
+                        </h1>
+                        <p className='mt-2 text-gray-400'>
+                            프로필 정보를 확인하세요
+                        </p>
                     </div>
 
                     {/* 프로필 사진 */}

@@ -21,7 +21,7 @@ import SearchHistoryPage from './pages/SearchHistoryPage';
 function App() {
     const { pathname } = useLocation();
     const dispatch = useDispatch<AppDispatch>();
-    const { authUser, isCheckingAuth } = useSelector(
+    const { accessToken, isCheckingAuth } = useSelector(
         (state: RootState) => state.auth
     );
 
@@ -40,7 +40,7 @@ function App() {
         }
     }, []);
 
-    if (isCheckingAuth && !authUser)
+    if (isCheckingAuth && !accessToken)
         return (
             <div className='flex items-center justify-center h-screen'>
                 <Loader className='size-10 animate-spin text-red-600' />
@@ -48,35 +48,35 @@ function App() {
         );
     return (
         <>
-            {authUser && <Navbar />}
+            {accessToken && <Navbar />}
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route
                     path='/login'
-                    element={!authUser ? <LoginPage /> : <Navigate to='/' />}
+                    element={!accessToken ? <LoginPage /> : <Navigate to='/' />}
                 />
                 <Route
                     path='/signup'
-                    element={!authUser ? <SignupPage /> : <Navigate to='/' />}
+                    element={!accessToken ? <SignupPage /> : <Navigate to='/' />}
                 />
                 <Route
                     path='/watch/:id'
                     element={
-                        authUser ? <WatchPage /> : <Navigate to='/login' />
+                        accessToken ? <WatchPage /> : <Navigate to='/login' />
                     }
                 />
 
                 <Route
                     path='/search'
                     element={
-                        authUser ? <SearchPage /> : <Navigate to='/login' />
+                        accessToken ? <SearchPage /> : <Navigate to='/login' />
                     }
                 />
 
                 <Route
                     path='/history'
                     element={
-                        authUser ? (
+                        accessToken ? (
                             <SearchHistoryPage />
                         ) : (
                             <Navigate to='/login' />
@@ -87,7 +87,7 @@ function App() {
                 <Route
                     path='/profile'
                     element={
-                        authUser ? <ProfilePage /> : <Navigate to='/login' />
+                        accessToken ? <ProfilePage /> : <Navigate to='/login' />
                     }
                 />
                 <Route path='/*' element={<NotFoundPage />} />

@@ -22,6 +22,7 @@ export default function ContentDetails() {
     const [content, setContent] = useState<Content>({});
     const [loading, setLoading] = useState(true);
 
+    const { accessToken } = useSelector((state: RootState) => state.auth);
     const { contentType } = useSelector((state: RootState) => state.content);
 
     useEffect(() => {
@@ -30,6 +31,9 @@ export default function ContentDetails() {
                 const res = await axiosInstance.get(`/media/${id}/details`, {
                     params: {
                         type: contentType,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
                     },
                 });
                 setContent(res.data.content);

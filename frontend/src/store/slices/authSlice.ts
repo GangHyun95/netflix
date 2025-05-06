@@ -2,9 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../lib/axios.ts';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import { RootState } from '../store.ts';
 
 type AuthState = {
+    accessToken: string | null;
     authUser: UserType | null;
+    googleClientId: string;
     isSigningUp: boolean;
     isLoggingIn: boolean;
     isLoggingOut: boolean;
@@ -24,7 +27,9 @@ type UserType = {
 };
 
 const initialState: AuthState = {
+    accessToken: null,
     authUser: null,
+    googleClientId: '',
     isSigningUp: false,
     isLoggingIn: false,
     isLoggingOut: false,
@@ -39,7 +44,7 @@ export const signup = createAsyncThunk(
         try {
             const res = await axiosInstance.post('/auth/signup', formData);
             toast.success('회원가입 성공');
-            return res.data.user;
+            return res.data;
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;
             const errorMessage =
@@ -57,7 +62,7 @@ export const login = createAsyncThunk(
         try {
             const res = await axiosInstance.post('/auth/login', formData);
             toast.success('로그인 성공');
-            return res.data.user;
+            return res.data;
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;
             const errorMessage =
@@ -91,8 +96,8 @@ export const checkAuth = createAsyncThunk(
     'auth/checkAuth',
     async (_, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.get('/auth/check');
-            return res.data.user;
+            const res = await axiosInstance.get('/auth/refresh-token');
+            return res.data;
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;
             const errorMessage =
@@ -103,11 +108,54 @@ export const checkAuth = createAsyncThunk(
     }
 );
 
+export const googleLogin = createAsyncThunk(
+    'auth/googleLogin',
+    async (code: string, { rejectWithValue }) => {
+        try {
+            const res = await axiosInstance.post('/auth/google-login', {
+                code,
+            });
+            toast.success('구글 로그인 성공');
+            return res.data;
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+            const errorMessage =
+                err.response?.data?.message ||
+                '구글 로그인 중 오류가 발생했습니다.';
+            toast.error(errorMessage);
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
+export const getGoogleClientId = createAsyncThunk(
+    'auth/getGoogleClientId',
+    async (_, {rejectWithValue}) => {
+        try {
+            const res = await axiosInstance.get('/auth/google-client-id');
+            return res.data;
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+            const errorMessage =
+                err.response?.data?.message ||
+                '구글 클라이언트 ID를 가져오는 중 오류가 발생했습니다.';
+            console.error('Error:', errorMessage);
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
 export const updateProfile = createAsyncThunk(
     'auth/updateProfile',
-    async (data: { profilePic: string }, { rejectWithValue }) => {
+    async (data: { profilePic: string }, { getState, rejectWithValue }) => {
         try {
-            const res = await axiosInstance.put('/auth/update-profile', data);
+            const state = getState() as RootState;
+            const { accessToken } = state.auth;
+            const res = await axiosInstance.put('/auth/update-profile', data, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             toast.success('프로필 업데이트 성공');
             return res.data.user;
         } catch (error) {
@@ -134,56 +182,65 @@ const authSlice = createSlice({
             })
             .addCase(signup.fulfilled, (state, action) => {
                 state.isSigningUp = false;
-                state.authUser = action.payload;
+                state.authUser = action.payload.user;
+                state.accessToken = action.payload.accessToken;
             })
             .addCase(signup.rejected, (state, action) => {
                 state.isSigningUp = false;
                 state.error = action.payload as string;
-            })
+            });
 
-            // 로그인
+        // 로그인
+        builder
             .addCase(login.pending, (state) => {
                 state.isLoggingIn = true;
                 state.error = null;
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.isLoggingIn = false;
-                state.authUser = action.payload;
+                state.authUser = action.payload.user;
+                state.accessToken = action.payload.accessToken;
             })
             .addCase(login.rejected, (state, action) => {
                 state.isLoggingIn = false;
                 state.error = action.payload as string;
-            })
+            });
 
-            // 로그아웃
+        // 로그아웃
+        builder
             .addCase(logout.pending, (state) => {
                 state.isLoggingOut = true;
                 state.error = null;
             })
             .addCase(logout.fulfilled, (state) => {
                 state.isLoggingOut = false;
+                state.accessToken = null;
                 state.authUser = null;
             })
             .addCase(logout.rejected, (state, action) => {
                 state.isLoggingOut = false;
                 state.error = action.payload as string;
-            })
+            });
 
-            // 인증 확인
+        // 인증 확인
+        builder
             .addCase(checkAuth.pending, (state) => {
                 state.isCheckingAuth = true;
                 state.error = null;
             })
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.isCheckingAuth = false;
-                state.authUser = action.payload;
+                state.authUser = action.payload.user;
+                state.accessToken = action.payload.accessToken;
             })
             .addCase(checkAuth.rejected, (state) => {
                 state.isCheckingAuth = false;
                 state.authUser = null;
-            })
+                state.accessToken = null;
+            });
 
-            // 프로필 업데이트
+        // 프로필 업데이트
+        builder
             .addCase(updateProfile.pending, (state) => {
                 state.isUpdatingProfile = true;
                 state.error = null;
@@ -194,6 +251,30 @@ const authSlice = createSlice({
             })
             .addCase(updateProfile.rejected, (state, action) => {
                 state.isUpdatingProfile = false;
+                state.error = action.payload as string;
+            });
+        // 구글 로그인
+        builder
+            .addCase(googleLogin.pending, (state) => {
+                state.isLoggingIn = true;
+                state.error = null;
+            })
+            .addCase(googleLogin.fulfilled, (state, action) => {
+                state.isLoggingIn = false;
+                console.log(action.payload);
+                state.authUser = action.payload.user;
+                state.accessToken = action.payload.accessToken;
+            })
+            .addCase(googleLogin.rejected, (state, action) => {
+                state.isLoggingIn = false;
+                state.error = action.payload as string;
+            });
+        // 구글 클라이언트 ID 가져오기
+        builder
+            .addCase(getGoogleClientId.fulfilled, (state, action) => {
+                state.googleClientId = action.payload.googleClientId;
+            })
+            .addCase(getGoogleClientId.rejected, (state, action) => {
                 state.error = action.payload as string;
             });
     },

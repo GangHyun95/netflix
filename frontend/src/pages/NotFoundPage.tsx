@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { RootState } from '../store/store';
 
 export default function NotFoundPage() {
-    const { authUser } = useSelector((state: RootState) => state.auth);
+    const { accessToken } = useSelector((state: RootState) => state.auth);
     return (
         <div
             className='min-h-screen bg-cover bg-center flex flex-col justify-center items-center text-white'
             style={{ backgroundImage: `url('/404.png')` }}
         >
-            {!authUser && (
+            {!accessToken && (
                 <header className='absolute top-0 left-0 p-4 bg-black w-full '>
                     <Link to={'/'}>
                         <img

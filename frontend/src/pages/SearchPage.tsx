@@ -25,6 +25,8 @@ export default function SearchPage() {
     const [results, setResults] = useState<SearchResult[]>([]);
 
     const dispatch = useDispatch();
+
+    const { accessToken } = useSelector((state: RootState) => state.auth);
     const { contentType } = useSelector((state: RootState) => state.content);
 
     const location = useLocation();
@@ -35,7 +37,11 @@ export default function SearchPage() {
         query: string
     ) => {
         try {
-            const res = await axiosInstance.get(`/search/${tab}/${query}`);
+            const res = await axiosInstance.get(`/search/${tab}/${query}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             setResults(res.data.content);
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;
@@ -66,14 +72,22 @@ export default function SearchPage() {
 
     const handleAddToHistory = async (item: SearchResult) => {
         try {
-            await axiosInstance.post('/search/history', {
-                id: item.id,
-                image: item.poster_path || item.profile_path,
-                title: item.title || item.name,
-                searchType: activeTab,
-            });
+            await axiosInstance.post(
+                '/search/history',
+                {
+                    id: item.id,
+                    image: item.poster_path || item.profile_path,
+                    title: item.title || item.name,
+                    searchType: activeTab,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
         } catch (error) {
-            console.error("검색 기록 추가 중 오류 발생:", error);
+            console.error('검색 기록 추가 중 오류 발생:', error);
         }
     };
 
@@ -178,7 +192,7 @@ export default function SearchPage() {
                                             contentType
                                         }
                                         onClick={() => {
-                                            handleAddToHistory(result)
+                                            handleAddToHistory(result);
                                             dispatch(setContentType(activeTab));
                                         }}
                                     >

@@ -25,6 +25,7 @@ export default function MovieSlider({
     const [media, setMedia] = useState<mediaType[]>([]);
     const [showArrows, setShowArrows] = useState(false);
     const slideRef = useRef<HTMLDivElement>(null);
+    const { accessToken } = useSelector((state: RootState) => state.auth);
     const { contentType } = useSelector((state: RootState) => state.content);
 
     const formattedContentType =
@@ -36,6 +37,10 @@ export default function MovieSlider({
                 const res = await axiosInstance.get(`/media/${category.key}`, {
                     params: {
                         type: contentType,
+                    },
+
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
                     },
                 });
                 setMedia(res.data.content);

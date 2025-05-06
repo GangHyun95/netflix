@@ -1,39 +1,42 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
+
 export const protectRoute = async (req, res, next) => {
+    let token;
+
     try {
-        const token = req.cookies['jwt-netflix'];
-        if (!token) {
+        if (
+            req.headers.authorization &&
+            req.headers.authorization.startsWith('Bearer')
+        ) {
+            token = req.headers.authorization.split(' ')[1];
+
+            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+            if (!decoded) {
+                return res.status(401).json({
+                    message: '유효하지 않은 토큰입니다.',
+                });
+            }
+
+            const user = await User.findById(decoded.id);
+            if (!user) {
+                return res.status(401).json({
+                    message: '사용자를 찾을 수 없습니다.',
+                });
+            }
+
+            req.user = user;
+
+            next();
+        } else {
             return res.status(401).json({
-                success: false,
-                message: 'No Token Provided',
+                message: '토큰이 제공되지 않았습니다.',
             });
         }
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        if (!decoded) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid Token',
-            });
-        }
-
-        const user = await User.findById(decoded.userId).select('-password');
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: 'User not found',
-            });
-        }
-
-        req.user = user;
-
-        next();
     } catch (error) {
-        console.log('Error in protectRoute middleware:', error.message);
-        return res.status(500).json({
-            success: false,
-            message: '서버 오류가 발생했습니다.',
+        return res.status(401).json({
+            message: '토큰 인증에 실패했습니다.',
         });
     }
 };

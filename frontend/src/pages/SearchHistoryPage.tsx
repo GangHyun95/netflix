@@ -4,6 +4,8 @@ import { Trash } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { formatDate } from '../utils/dateFunction';
 import { axiosInstance } from '../lib/axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 type SearchHistory = {
     id: number;
@@ -15,11 +17,15 @@ type SearchHistory = {
 
 export default function SearchHistoryPage() {
     const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
-
+    const { accessToken } = useSelector((state: RootState) => state.auth);
     useEffect(() => {
         const getSearchHistory = async () => {
             try {
-                const res = await axiosInstance.get('/search/history');
+                const res = await axiosInstance.get('/search/history', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
                 setSearchHistory(res.data.content);
             } catch (error) {
                 setSearchHistory([]);
@@ -31,7 +37,12 @@ export default function SearchHistoryPage() {
     const handleDelete = async (entry: SearchHistory) => {
         try {
             await axiosInstance.delete(
-                `/search/history/${entry.id}/?createdAt=${entry.createdAt}`
+                `/search/history/${entry.id}/?createdAt=${entry.createdAt}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
             );
             setSearchHistory(
                 searchHistory.filter(

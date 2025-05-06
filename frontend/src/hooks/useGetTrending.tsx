@@ -17,6 +17,8 @@ type TrendingContent = {
 export default function useGetTrending() {
     const [trendingContent, setTrendingContent] =
         useState<TrendingContent>(null);
+
+    const { accessToken } = useSelector((state: RootState) => state.auth);
     const { contentType } = useSelector((state: RootState) => state.content);
 
     useEffect(() => {
@@ -25,6 +27,9 @@ export default function useGetTrending() {
                 const res = await axiosInstance.get(`/media/trending`, {
                     params: {
                         type: contentType,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
                     },
                 });
                 setTrendingContent(res.data.content);

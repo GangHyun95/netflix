@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppDispatch, RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/slices/authSlice';
+import { getGoogleClientId, login } from '../store/slices/authSlice';
 import Loader from '../components/Loader';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({
@@ -12,12 +14,21 @@ export default function LoginPage() {
     });
 
     const dispatch = useDispatch<AppDispatch>();
-    const { isLoggingIn } = useSelector((state: RootState) => state.auth);
+    const { isLoggingIn, googleClientId } = useSelector(
+        (state: RootState) => state.auth
+    );
 
     const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(login(formData));
     };
+
+    useEffect(() => {
+        dispatch(getGoogleClientId());
+    }, [getGoogleClientId]);
+
+    console.log(googleClientId);
+    if (!googleClientId) return <Loader />;
 
     return (
         <div className='h-screen w-full hero-bg'>
@@ -80,6 +91,17 @@ export default function LoginPage() {
                         <button className='btn w-full gap-1.5 px-4 py-2 text-sm font-semibold rounded-md'>
                             {isLoggingIn ? <Loader /> : '로그인'}
                         </button>
+
+                        <div className='flex items-center gap-4'>
+                            <div className='flex-1 h-px bg-gray-300/50' />
+                            <span className='text-sm text-muted-foreground'>
+                                or
+                            </span>
+                            <div className='flex-1 h-px bg-gray-300/50' />
+                        </div>
+                        <GoogleOAuthProvider clientId={googleClientId}>
+                            <GoogleLoginButton />
+                        </GoogleOAuthProvider>
                     </form>
                     <div className='text-center text-gray-400'>
                         넷플릭스 회원이 아닌가요?{' '}
