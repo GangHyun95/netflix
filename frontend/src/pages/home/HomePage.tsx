@@ -4,7 +4,7 @@ import HomeScreen from './HomeScreen';
 import { RootState } from '../../store/store';
 
 export default function HomePage() {
-    const { accessToken } = useSelector((state: RootState) => state.auth);
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
     return <>{accessToken ? <HomeScreen /> : <AuthScreen />}</>;
 }

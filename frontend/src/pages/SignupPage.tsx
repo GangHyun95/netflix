@@ -15,7 +15,7 @@ export default function SignupPage() {
     });
 
     const dispatch = useDispatch<AppDispatch>();
-    const { isSigningUp } = useSelector((state: RootState) => state.auth);
+    const isSigningUp = useSelector((state: RootState) => state.auth.isSigningUp);
 
     const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();

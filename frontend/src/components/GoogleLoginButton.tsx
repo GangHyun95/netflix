@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '../store/store';
 
 export default function GoogleLoginButton() {
     const dispatch = useDispatch<AppDispatch>();
-    const { isLoggingIn } = useSelector((state: RootState) => state.auth);
+    const isLoggingIn = useSelector((state: RootState) => state.auth.isLoggingIn);
     const googleLoginHandler = useGoogleLogin({
         flow: 'auth-code',
         onSuccess: async (response) => {

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './store/store';
 import { checkAuth } from './store/slices/authSlice';
 import { setContentType } from './store/slices/contentSlice';
@@ -21,10 +21,14 @@ import SearchHistoryPage from './pages/SearchHistoryPage';
 function App() {
     const { pathname } = useLocation();
     const dispatch = useDispatch<AppDispatch>();
-    const { accessToken, isCheckingAuth } = useSelector(
-        (state: RootState) => state.auth
-    );
 
+    const { accessToken, isCheckingAuth } = useSelector(
+        (state: RootState) => ({
+            accessToken: state.auth.accessToken,
+            isCheckingAuth: state.auth.isCheckingAuth,
+        }),
+        shallowEqual
+    );
     useEffect(() => {
         dispatch(checkAuth());
     }, [dispatch]);
@@ -57,7 +61,9 @@ function App() {
                 />
                 <Route
                     path='/signup'
-                    element={!accessToken ? <SignupPage /> : <Navigate to='/' />}
+                    element={
+                        !accessToken ? <SignupPage /> : <Navigate to='/' />
+                    }
                 />
                 <Route
                     path='/watch/:id'

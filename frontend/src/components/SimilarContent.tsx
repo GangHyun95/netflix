@@ -17,8 +17,8 @@ export default function SimilarContent() {
     const { id } = useParams();
     const [similarContent, setSimilarContent] = useState<Content[]>([]);
 
-    const { accessToken } = useSelector((state: RootState) => state.auth);
-    const { contentType } = useSelector((state: RootState) => state.content);
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
     const sliderRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

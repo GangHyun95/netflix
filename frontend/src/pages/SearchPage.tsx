@@ -26,8 +26,8 @@ export default function SearchPage() {
 
     const dispatch = useDispatch();
 
-    const { accessToken } = useSelector((state: RootState) => state.auth);
-    const { contentType } = useSelector((state: RootState) => state.content);
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
 
     const location = useLocation();
     const navigate = useNavigate();

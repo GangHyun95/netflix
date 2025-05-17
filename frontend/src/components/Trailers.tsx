@@ -16,8 +16,8 @@ export default function Trailers() {
     const [currentTrailerIdx, setCurrentTrailerIdx] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    const { accessToken } = useSelector((state: RootState) => state.auth);
-    const { contentType } = useSelector((state: RootState) => state.content);
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
 
     useEffect(() => {
         const getTrailers = async () => {

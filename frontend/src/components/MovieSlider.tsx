@@ -25,8 +25,10 @@ export default function MovieSlider({
     const [media, setMedia] = useState<mediaType[]>([]);
     const [showArrows, setShowArrows] = useState(false);
     const slideRef = useRef<HTMLDivElement>(null);
-    const { accessToken } = useSelector((state: RootState) => state.auth);
-    const { contentType } = useSelector((state: RootState) => state.content);
+
+
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
 
     const formattedContentType =
         contentType === 'movie' ? '영화' : 'TV 프로그램';

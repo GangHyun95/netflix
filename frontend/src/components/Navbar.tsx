@@ -10,8 +10,8 @@ import { LogOut, Menu, Search } from 'lucide-react';
 export default function Navbar() {
     const { pathname } = useLocation();
     const dispatch = useDispatch<AppDispatch>();
-    const { authUser } = useSelector((state: RootState) => state.auth);
-    const { contentType } = useSelector((state: RootState) => state.content);
+    const authUser = useSelector((state: RootState) => state.auth.authUser);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);

@@ -17,7 +17,7 @@ type SearchHistory = {
 
 export default function SearchHistoryPage() {
     const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
-    const { accessToken } = useSelector((state: RootState) => state.auth);
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     useEffect(() => {
         const getSearchHistory = async () => {
             try {

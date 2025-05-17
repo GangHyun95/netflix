@@ -7,9 +7,9 @@ import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
     const dispatch = useDispatch<AppDispatch>();
-    const { authUser, isUpdatingProfile } = useSelector(
-        (state: RootState) => state.auth
-    );
+
+    const authUser = useSelector((state: RootState) => state.auth.authUser);
+    const isUpdatingProfile = useSelector((state: RootState) => state.auth.isUpdatingProfile);
 
     const [selectedImg, setSelectedImg] = useState<string | null>(null);
     const handleImageUpload = async (

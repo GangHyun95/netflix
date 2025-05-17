@@ -14,10 +14,9 @@ export default function LoginPage() {
     });
 
     const dispatch = useDispatch<AppDispatch>();
-    const { isLoggingIn, googleClientId } = useSelector(
-        (state: RootState) => state.auth
-    );
 
+    const isLoggingIn = useSelector((state: RootState) => state.auth.isLoggingIn);
+    const googleClientId = useSelector((state: RootState) => state.auth.googleClientId);
     const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(login(formData));

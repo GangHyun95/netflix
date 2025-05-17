@@ -18,8 +18,8 @@ export default function useGetTrending() {
     const [trendingContent, setTrendingContent] =
         useState<TrendingContent>(null);
 
-    const { accessToken } = useSelector((state: RootState) => state.auth);
-    const { contentType } = useSelector((state: RootState) => state.content);
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
 
     useEffect(() => {
         const getTrendingContent = async () => {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { RootState } from '../store/store';
 
 export default function NotFoundPage() {
-    const { accessToken } = useSelector((state: RootState) => state.auth);
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     return (
         <div
             className='min-h-screen bg-cover bg-center flex flex-col justify-center items-center text-white'

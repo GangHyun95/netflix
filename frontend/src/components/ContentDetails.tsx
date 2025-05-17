@@ -21,9 +21,9 @@ export default function ContentDetails() {
 
     const [content, setContent] = useState<Content>({});
     const [loading, setLoading] = useState(true);
-
-    const { accessToken } = useSelector((state: RootState) => state.auth);
-    const { contentType } = useSelector((state: RootState) => state.content);
+    
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
 
     useEffect(() => {
         const getContentDetails = async () => {

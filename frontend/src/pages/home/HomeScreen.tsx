@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 export default function HomeScreen() {
     const { trendingContent } = useGetTrending();
-    const { contentType } = useSelector((state: RootState) => state.content);
+    const contentType = useSelector((state: RootState) => state.content.contentType);
     const [imgLoading, setImgLoading] = useState(true);
 
     if (!trendingContent)
