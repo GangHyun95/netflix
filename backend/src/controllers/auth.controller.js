@@ -47,7 +47,7 @@ export const signup = async (req, res) => {
         const image =
             PROFILE_PICS[Math.floor(Math.random() * PROFILE_PICS.length)];
 
-        const newUser = await User({
+        const newUser = new User({
             email,
             password: hashedPassword,
             username,
