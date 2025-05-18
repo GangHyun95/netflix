@@ -97,7 +97,7 @@ export const checkAuth = createAsyncThunk(
     'auth/checkAuth',
     async (_, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.get('/auth/refresh-token');
+            const res = await axiosInstance.post('/auth/refresh');
             return res.data;
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;
@@ -113,7 +113,7 @@ export const googleLogin = createAsyncThunk(
     'auth/googleLogin',
     async (code: string, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.post('/auth/google-login', {
+            const res = await axiosInstance.post('/auth/google', {
                 code,
             });
             toast.success('구글 로그인 성공');
@@ -133,7 +133,7 @@ export const getGoogleClientId = createAsyncThunk(
     'auth/getGoogleClientId',
     async (_, {rejectWithValue}) => {
         try {
-            const res = await axiosInstance.get('/auth/google-client-id');
+            const res = await axiosInstance.get('/auth/google');
             return res.data;
         } catch (error) {
             const err = error as AxiosError<{ message: string }>;

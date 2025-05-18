@@ -18,9 +18,9 @@ router.post('/logout', logout);
 
 router.put('/update-profile', protectRoute, updateProfile);
 
-router.get('/refresh-token', refreshAccessToken);
+router.post('/refresh', refreshAccessToken);
 
-router.post('/google-login', googleLogin);
-router.get('/google-client-id', getGoogleClientId);
+router.post('/google', googleLogin);
+router.get('/google', getGoogleClientId);
 
 export default router;
