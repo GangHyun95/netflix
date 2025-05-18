@@ -24,16 +24,13 @@ export default function AuthScreen() {
                     alt='Netflix logo'
                     className='w-32 md:w-52'
                 />
-                <Link
-                    to='login'
-                    className='btn py-1 px-2 rounded'
-                >
+                <Link to='login' className='btn py-1 px-2 rounded'>
                     로그인
                 </Link>
             </header>
 
             {/* hero section */}
-            <div className='flex flex-col items-center justify-center text-center py-40 max-w-6xl mx-auto'>
+            <div className='flex flex-col items-center justify-center text-center py-40 max-w-6xl mx-auto px-4 md:px-0'>
                 <h1 className='text-4xl md:text-6xl font-bold mb-4 leading-tight'>
                     영화, 시리즈 등을 무제한으로
                 </h1>
@@ -44,20 +41,19 @@ export default function AuthScreen() {
                     시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면
                     이메일 주소를 입력하세요.
                 </p>
-
                 <form
-                    className='flex flex-col md:flex-row gap-4 w-1/2'
+                    className='flex flex-col md:flex-row gap-4 w-full md:w-1/2'
                     onSubmit={handleSubmit}
                 >
                     <input
                         ref={emailInputRef}
                         type='email'
                         placeholder='이메일 주소'
-                        className='p-4 rounded flex-1 bg-black/80 border border-gray-700'
+                        className='p-4 w-full rounded flex-1 bg-black/80 border border-gray-700'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <button className='btn text-xl lg:text-2xl px-2 lg:px-6 py-1 md:py-2 rounded'>
+                    <button className='btn text-xl lg:text-2xl px-2 lg:px-6 py-2 rounded'>
                         시작하기
                         <ChevronRight className='size-6 md:size-8' />
                     </button>
